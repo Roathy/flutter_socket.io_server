@@ -9,19 +9,29 @@
 </head>
 
 <body>
-  <h1>Acceso denegado</h1>
+  <h1>Acceso</h1>
   <script src="socket.io/socket.io.js"></script>
   <script>
     var socketClient = io();
-    socketClient.on('connect', function () {
+    socketClient.on('connect', function (payload) {
       console.log('conectado al servidor');
     });
+
     socketClient.on('disconnect', function () {
       console.log('conexión con servidor perdida');
     });
-    socketClient.emit('clientMessage', { name: 'Julio EVM' });
+
     socketClient.on('serverMessage', (payload) => {
-      console.log('server said: ', payload.message);
+      console.log('server: ', payload.message);
+    });
+
+    socketClient.on('new-message', function (payload) {
+      console.log(payload);
+    });
+
+    socketClient.on('current-bands', function (bands) {
+      console.clear();
+      console.table(bands);
     });
   </script>
 </body>
